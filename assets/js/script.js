@@ -5,17 +5,14 @@ document.addEventListener("DOMContentLoaded", function() {
     for (let button of buttons) {
         button.addEventListener("click", function() {
          if (this.getAttribute("data-type") === "submit") {
-            alert("You clicked Submit!");
+            checkAnswer();
            } else {
             let gameType = this.getAttribute("data-type");
             runGame(gameType);
             }
         });
     }
-
-
- runGame("addition");
-
+runGame("addition");
 });
 /**
  * The main game 'loop', called when the script is first loaded
@@ -34,12 +31,36 @@ if (gameType === "addition")
     throw `Unknown game type: ${gameType} .Aborting!`;
   }
 }
-
+/**Check the answer against the first element
+ * then return calculate correct answer array
+ */
 function checkAnswer() {
-
+let userAnswer = parseInt(document.getElementById('answer-box').value);
+let calculatedAnswer = calculateCorrectAnswer();
+let isCorrect = userAnswer === calculatedAnswer[0];
+if(isCorrect) {
+  alert('Hey you got it Right! :D');
+} else {
+  alert(`Aww.... you answer ${userAnswer}. and  the correct answer was ${calculatedAnswer[0]}!`);
+}
+runGame(calculatedAnswer[1]);
 }
 
+/**Get the operands (the numbers) and the operator (plus, minus etc.) 
+ * directly from the DOM, and returns the correct answer.
+ */
+ 
 function calculateCorrectAnswer() {
+  let operand1 = parseInt(document.getElementById('operand1').innerText);
+  let operand2 = parseInt(document.getElementById('operand2').innerText);
+  let operator = document.getElementById('operator').innerText;
+
+  if(operator === '+') {
+    return [operand1 + operand2, 'addition'];
+  } else {
+    alert(`Unimplemented operator ${operator}`);
+    throw `Unimplemented operator ${operator} .Aborting!`;
+  }
 
 }
 
